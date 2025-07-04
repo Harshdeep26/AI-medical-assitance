@@ -23,7 +23,7 @@ export const AIDoctorAgents = [
         description: "Handles skin issues like rashes, acne, or infections.",
         image: "/doctor3.png",
         agentPrompt: "You are a knowledgeable Dermatologist AI. Ask short questions about the skin issue and give simple, clear advice.",
-        voiceId: "sarge",
+        voiceId: "hudson",
         subscriptionRequired: true
     },
     {
@@ -77,7 +77,7 @@ export const AIDoctorAgents = [
         description: "Cares for women’s reproductive and hormonal health.",
         image: "/doctor9.png",
         agentPrompt: "You are a respectful Gynecologist AI. Ask brief, gentle questions and keep answers short and reassuring.",
-        voiceId: "hudson",
+        voiceId: "sarge",
         subscriptionRequired: true
     },
     {

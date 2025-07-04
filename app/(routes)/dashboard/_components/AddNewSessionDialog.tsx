@@ -68,8 +68,7 @@ function AddNewSessionDialog() {
         if (result.data?.sessionId) {
             console.log(result.data.sessionId);
             //route new conversation screen
-            router.push(`/dashboard/medicalagent/${result.data.sessionId}`);
-
+            router.push(`/dashboard/medical-agent/${result.data.sessionId}`);
         }
         setLoading(false);
     }
@@ -91,17 +90,18 @@ function AddNewSessionDialog() {
                             </div> :
                                 <div>
                                     <h2>Select The Doctor</h2>
-                                    <div className='grid grid-cols-3 gap-5 '>
+                                    <div className='grid grid-cols-3 gap-5 pt-4'>
                                         {/* suggestedDoctor */}
-                                        {suggestedDoctors? suggestedDoctors.map((doctor, index) => (
-                                                <SuggestedDoctorCard doctorAgent={doctor} key={index}
-                                                    setSelectedDoctor = {() => setSelectedDoctor(doctor)}
-                                                    //@ts-ignore
-                                                    selectedDoctor={selectedDoctor} />
-                                                // <DoctorsAgentCard doctorAgent={doctor} key={index} />
-                                            )):<div className='border-2 items-center justify-center'>
-                                                <h2>openai API Call is not working currently, Please reload!!</h2>
-                                            </div>
+                                        {suggestedDoctors && suggestedDoctors.map((doctor, index) => (
+                                            <SuggestedDoctorCard doctorAgent={doctor} key={index}
+                                                setSelectedDoctor={() => setSelectedDoctor(doctor)}
+                                                //@ts-ignore
+                                                selectedDoctor={selectedDoctor} />
+                                            // <DoctorsAgentCard doctorAgent={doctor} key={index} />
+                                        ))
+                                        //:<div className='border-2 items-center justify-center'>
+                                        //         <h2>openai API Call is not working currently, Please reload!!</h2>
+                                        //     </div>
                                         }
                                     </div>
                                 </div>
