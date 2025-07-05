@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     Dialog,
     DialogContent,
@@ -17,6 +17,9 @@ import axios from 'axios'
 import DoctorsAgentCard, { doctorAgent } from './DoctorsAgentCard'
 import SuggestedDoctorCard from './SuggestedDoctorCard'
 import { useRouter } from 'next/navigation'
+import { useAuth } from '@clerk/nextjs'
+import { SessionDetail } from '../medical-agent/[sessionId]/page'
+import HistoryList from './HistoryList'
 
 function AddNewSessionDialog() {
     const [notes, setNote] = useState<string>('');
@@ -24,6 +27,19 @@ function AddNewSessionDialog() {
     const [suggestedDoctors, setSuggestedDoctors] = useState<doctorAgent[]>();
     const [selectedDoctor, setSelectedDoctor] = useState<doctorAgent>();
     const router = useRouter();
+    const [historyList, setHistoryList] = useState<SessionDetail[]>([]);
+
+    const { has } = useAuth();
+    const PaidUser = has && has({ plan: 'pro' });
+    useEffect(() => {
+        GetHistoryList();
+    }, [])
+
+    const GetHistoryList = async () => {
+        const result = await axios.get('/api/session-chat?sessionId=all');
+        console.log(result.data);
+        setHistoryList(result.data);
+    };
 
     const OnClickNext = async () => {
         setLoading(true);
@@ -76,7 +92,7 @@ function AddNewSessionDialog() {
     return (
         <div>
             <Dialog>
-                <DialogTrigger><Button>+ Start a Consultation</Button></DialogTrigger>
+                <DialogTrigger><Button disabled={!PaidUser && historyList?.length>=1}>+ Start a Consultation</Button></DialogTrigger>
                 <DialogContent>
                     <DialogHeader>
                         <DialogTitle>Add Basic Details</DialogTitle>
@@ -99,9 +115,9 @@ function AddNewSessionDialog() {
                                                 selectedDoctor={selectedDoctor} />
                                             // <DoctorsAgentCard doctorAgent={doctor} key={index} />
                                         ))
-                                        //:<div className='border-2 items-center justify-center'>
-                                        //         <h2>openai API Call is not working currently, Please reload!!</h2>
-                                        //     </div>
+                                            //:<div className='border-2 items-center justify-center'>
+                                            //         <h2>openai API Call is not working currently, Please reload!!</h2>
+                                            //     </div>
                                         }
                                     </div>
                                 </div>

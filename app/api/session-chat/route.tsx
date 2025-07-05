@@ -42,7 +42,7 @@
 import { db } from "@/config/db";
 import { SessionChatTable } from "@/config/schema";
 import { currentUser } from "@clerk/nextjs/server";
-import { eq } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
 
@@ -83,7 +83,15 @@ export async function GET(req: NextRequest) {
         return NextResponse.json({ error: "Missing sessionId" }, { status: 400 });
     }
 
-    //@ts-ignore
-    const result = await db.select().from(SessionChatTable).where(eq(SessionChatTable.SessionId, sessionId));
-    return NextResponse.json(result[0]);
+    if(sessionId=='all'){
+        //@ts-ignore
+        const result = await db.select().from(SessionChatTable).where(eq(SessionChatTable.createdby, user?.primaryEmailAddress?.emailAddress))
+        .orderBy(desc(SessionChatTable.id));
+        return NextResponse.json(result);
+    }
+    else{
+        //@ts-ignore
+        const result = await db.select().from(SessionChatTable).where(eq(SessionChatTable.SessionId, sessionId));
+        return NextResponse.json(result[0]);
+    }
 }

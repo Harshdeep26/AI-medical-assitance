@@ -11,6 +11,7 @@ import {
   UserButton,
 } from '@clerk/nextjs'
 import Provider from "./provider";
+import { Toaster } from "sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -40,6 +41,7 @@ export default function RootLayout({
         >
           <Provider>
             {children}
+            <Toaster/>
           </Provider>
           {/*this below code maked 2 frame means continous second frame*/}
           {/* {children} */}
